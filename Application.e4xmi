@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_6wlLcMgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.application" bindingContexts="_6wlLecgZEeSyMNYR5xypkQ">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_6wlLccgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.window.main" label="Student Info" x="500" y="300" width="800" height="400">
+    <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.partsashcontainer.sample" accessibilityPhrase="" horizontal="true">
+      <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="studentinforcp.partstack.viewer" containerData="3000">
+        <children xsi:type="basic:Part" xmi:id="_DdexAFbtEeyCpdrMg7p_BQ" elementId="studentinforcp.part.groupview" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.parts.TreeGroupView" label="Group View"/>
+      </children>
+      <children xsi:type="basic:PartStack" xmi:id="_VzNyMFbtEeyCpdrMg7p_BQ" elementId="studentinforcp.partstack.editor" containerData="7000" accessibilityPhrase=""/>
+    </children>
+    <mainMenu xmi:id="_6wlLicgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.main.menu">
+      <children xsi:type="menu:Menu" xmi:id="_6wlLisgZEeSyMNYR5xypkQ" elementId="file" label="File">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLi8gZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.file.open" label="Open" iconURI="platform:/plugin/StudentInfoRCP/icons/open_menu.png" tooltip="Open file" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjMgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.file.save" label="Save" iconURI="platform:/plugin/StudentInfoRCP/icons/save_menu.png" tooltip="Save file" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjcgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.file.quit" label="Quit" iconURI="platform:/plugin/StudentInfoRCP/icons/quit_menu.png" tooltip="Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_BBYz8FbrEeyCpdrMg7p_BQ" elementId="edit" label="Edit">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_HhjVUFbrEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.edit.new" label="New" iconURI="platform:/plugin/StudentInfoRCP/icons/new_menu.png" tooltip="Add new person" command="_Fw9zYFbpEeyCpdrMg7p_BQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Op1xMFbsEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.edit.edit" label="Edit" iconURI="platform:/plugin/StudentInfoRCP/icons/edit_menu.png" tooltip="Edit person" command="_r98EwFbpEeyCpdrMg7p_BQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_WSGjEFbsEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.edit.delete" label="Delete" iconURI="platform:/plugin/StudentInfoRCP/icons/delete_menu.png" tooltip="Delete person" command="_y5uyMFbpEeyCpdrMg7p_BQ"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_6wlLjsgZEeSyMNYR5xypkQ" elementId="help" label="Help">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLj8gZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.about" label="About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
+      </children>
+    </mainMenu>
+    <trimBars xmi:id="_6wlLlcgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.trimbar.top">
+      <children xsi:type="menu:ToolBar" xmi:id="_6wlLlsgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.main.toolbar">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_6wlLl8gZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.trimbar.top.open" iconURI="platform:/plugin/StudentInfoRCP/icons/open.png" tooltip="Open file" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_6wlLmMgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.trimbar.top.save" iconURI="platform:/plugin/StudentInfoRCP/icons/save.png" tooltip="Save file" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:ToolBarSeparator" xmi:id="_OQ9FMFbuEeyCpdrMg7p_BQ" elementId="studentinforcp.toolbarseparator.0"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_VUTMIFbuEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.trimbar.top.new" label="New" iconURI="platform:/plugin/StudentInfoRCP/icons/new.png" tooltip="Add new person" command="_Fw9zYFbpEeyCpdrMg7p_BQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_tuQZkFbuEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.trimbar.top.edit" label="Edit" iconURI="platform:/plugin/StudentInfoRCP/icons/edit.png" command="_r98EwFbpEeyCpdrMg7p_BQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_1k8pAFbuEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.trimbar.top.delete" label="Delete" iconURI="platform:/plugin/StudentInfoRCP/icons/delete.png" tooltip="Delete person info" command="_y5uyMFbpEeyCpdrMg7p_BQ"/>
+        <children xsi:type="menu:ToolBarSeparator" xmi:id="_Bgt3cFbvEeyCpdrMg7p_BQ" elementId="studentinforcp.toolbarseparator.1"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_B7wNoFbvEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.trimbar.top.quit" label="Quit" iconURI="platform:/plugin/StudentInfoRCP/icons/quit.png" tooltip="Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
+      </children>
+    </trimBars>
+  </children>
+  <handlers xmi:id="_6wlLfcgZEeSyMNYR5xypkQ" elementId="com.luxoft.vmosin.handler.quitCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.QuitHandler" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_6wlLgcgZEeSyMNYR5xypkQ" elementId="com.luxoft.vmosin.handler.openCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.OpenHandler" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_6wlLhMgZEeSyMNYR5xypkQ" elementId="com.luxoft.vmosin.handler.saveCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.SaveHandler" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_6wlLh8gZEeSyMNYR5xypkQ" elementId="com.luxoft.vmosin.handler.aboutCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.AboutHandler" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_X9VxEFoGEeyN2toqU2UZKg" elementId="com.luxoft.vmosin.handler.newCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.NewHandler" command="_Fw9zYFbpEeyCpdrMg7p_BQ"/>
+  <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
+    <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
+    <bindings xmi:id="_6wlLhcgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.keybinding.m1s" keySequence="M1+S" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
+    <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
+    <bindings xmi:id="__C4KwFboEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.keybinding.m1n" keySequence="M1+N" command="_Fw9zYFbpEeyCpdrMg7p_BQ"/>
+    <bindings xmi:id="_HeqO0FbqEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.keybinding.m1e" keySequence="M1+E" command="_r98EwFbpEeyCpdrMg7p_BQ"/>
+    <bindings xmi:id="_L-w88FbqEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.keybinding.m1d" keySequence="M1+D" command="_y5uyMFbpEeyCpdrMg7p_BQ"/>
+    <bindings xmi:id="_6wlLiMgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.keybinding.m1a" keySequence="M1+A" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
+  </bindingTables>
+  <rootContext xmi:id="_6wlLecgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
+    <children xmi:id="_6wlLesgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
+    <children xmi:id="_6wlLe8gZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
+  </rootContext>
+  <commands xmi:id="_6wlLgMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.open" commandName="openCommand"/>
+  <commands xmi:id="_6wlLg8gZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
+  <commands xmi:id="_6wlLfMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
+  <commands xmi:id="_Fw9zYFbpEeyCpdrMg7p_BQ" elementId="org.eclipse.ui.window.newEditor" commandName="newCommand"/>
+  <commands xmi:id="_r98EwFbpEeyCpdrMg7p_BQ" elementId="studentinforcp.ui.edit.editCommand" commandName="editCommand"/>
+  <commands xmi:id="_y5uyMFbpEeyCpdrMg7p_BQ" elementId="studentinforcp.ui.edit.deleteCommand" commandName="deleteCommand"/>
+  <commands xmi:id="_6wlLhsgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
+  <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
+  <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
+  <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
+  <addons xmi:id="_6wlLdcgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.workbench.commands.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon"/>
+  <addons xmi:id="_6wlLdsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.workbench.handler.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
+  <addons xmi:id="_6wlLd8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
+  <addons xmi:id="_6wlLeMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
+</application:Application>
