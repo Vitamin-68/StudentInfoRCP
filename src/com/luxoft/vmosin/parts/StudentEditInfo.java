@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -17,6 +18,8 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import com.luxoft.vmosin.handlers.SaveHandler;
 
 public class StudentEditInfo {
 	
@@ -94,6 +97,7 @@ public class StudentEditInfo {
 	    Button button = new Button(parent, SWT.PUSH);
 	    button.setLayoutData(gridData);
 	    button.setText("Save");
+	    
 	}
 	
 	

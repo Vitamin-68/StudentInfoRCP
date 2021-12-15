@@ -8,13 +8,27 @@ import javax.inject.Inject;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 
+import com.luxoft.vmosin.action.AddGroupAction;
+import com.luxoft.vmosin.action.DelAllGroupAction;
 import com.luxoft.vmosin.entity.Person;
+import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
+import com.luxoft.vmosin.handlers.ContextMenuHandler;
 
-public class TreeGroupView {
+public class TreeGroupView extends SelectionAdapter {
 
 	private TreeViewer treeViewer;
 	PersonGroup root;
@@ -28,6 +42,52 @@ public class TreeGroupView {
 		treeViewer.setLabelProvider(new MyLabelProvider());
 		treeViewer.setContentProvider(new MyContentProvider());
 		createPersonsModel();
+
+//		final Action a = new Action("") {
+//		};
+//		IStructuredSelection selection = treeViewer.getStructuredSelection();
+//		Menu menuFolder = new Menu(treeViewer.getControl());
+//		menu.addMenuListener(new MenuListener() {
+//			IStructuredSelection selection = treeViewer.getStructuredSelection();
+//			ContextMenuHandler.execute(selection, mgr, menu);
+//		});
+//		MenuItem addGroupItem = new MenuItem(menuFolder, SWT.PUSH);
+//		addGroupItem.setText("Add new Group");
+//		addGroupItem.addSelectionListener(this);
+//		MenuItem delAllGroupItem = new MenuItem(menuFolder, SWT.PUSH);
+//		delAllGroupItem.setText("Delete all Group");
+//		treeViewer.getTree().setMenu(menuFolder);
+
+//		mgr.addMenuListener(manager -> {
+//			IStructuredSelection selection = treeViewer.getStructuredSelection();
+//			ContextMenuHandler.execute(selection, mgr, menu);
+//		});
+
+		MenuManager mgr = new MenuManager();
+		Menu menu = mgr.createContextMenu(treeViewer.getControl());
+		mgr.addMenuListener(new IMenuListener() {
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				if (treeViewer.getSelection().isEmpty()) {
+					return;
+				}
+				if (treeViewer.getSelection() instanceof IStructuredSelection) {
+					IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+					PersonAbstr object = (PersonAbstr) selection.getFirstElement();
+
+					if (object instanceof PersonGroup) {
+						manager.add(new AddGroupAction());
+						manager.add(new DelAllGroupAction());
+					} else if (object instanceof Person) {
+
+//                        manager.add(new OtherAction());
+
+					}
+				}
+			}
+		});
+		mgr.setRemoveAllWhenShown(true);
+		treeViewer.getControl().setMenu(menu);
 		treeViewer.setInput(root);
 	}
 
