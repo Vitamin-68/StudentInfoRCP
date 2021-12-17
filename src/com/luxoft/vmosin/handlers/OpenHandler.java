@@ -8,6 +8,8 @@ public class OpenHandler {
 	@Execute
 	public void execute(Shell shell){
 		FileDialog dialog = new FileDialog(shell);
-		dialog.open();
+		dialog.setFilterExtensions(new String[] { "*.json", "*.*" });
+		String fn = dialog.open();
+		
 	}
 }

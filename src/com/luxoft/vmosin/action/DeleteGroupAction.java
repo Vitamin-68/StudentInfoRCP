@@ -2,9 +2,9 @@ package com.luxoft.vmosin.action;
 
 import org.eclipse.jface.action.Action;
 
-public class DelAllGroupAction extends Action {
+public class DeleteGroupAction extends Action {
 
-	public DelAllGroupAction(String string) {
+	public DeleteGroupAction(String string) {
 		super.setText(string);
 	}
 

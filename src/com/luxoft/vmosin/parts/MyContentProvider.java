@@ -3,7 +3,6 @@ package com.luxoft.vmosin.parts;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
 import com.luxoft.vmosin.entity.PersonGroup;
-import com.luxoft.vmosin.tmp.MyModel;
 
 public class MyContentProvider implements ITreeContentProvider {
 	
@@ -24,7 +23,7 @@ public class MyContentProvider implements ITreeContentProvider {
 			return null;
 		}
 
-		return ((MyModel)element).parent;
+		return ((PersonGroup)element).getParent();
 	}
 
 	@Override

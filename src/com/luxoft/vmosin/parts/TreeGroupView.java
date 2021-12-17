@@ -22,7 +22,9 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import com.luxoft.vmosin.action.AddGroupAction;
+import com.luxoft.vmosin.action.AddStudentAction;
 import com.luxoft.vmosin.action.DelAllGroupAction;
+import com.luxoft.vmosin.action.DeleteGroupAction;
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
@@ -31,7 +33,7 @@ import com.luxoft.vmosin.handlers.ContextMenuHandler;
 public class TreeGroupView extends SelectionAdapter {
 
 	private TreeViewer treeViewer;
-	PersonGroup root;
+	private PersonGroup root;
 
 	@Inject
 	private MPart part;
@@ -41,27 +43,9 @@ public class TreeGroupView extends SelectionAdapter {
 		treeViewer = new TreeViewer(parent);
 		treeViewer.setLabelProvider(new MyLabelProvider());
 		treeViewer.setContentProvider(new MyContentProvider());
+//		treeViewer.addlist
 		createPersonsModel();
 
-//		final Action a = new Action("") {
-//		};
-//		IStructuredSelection selection = treeViewer.getStructuredSelection();
-//		Menu menuFolder = new Menu(treeViewer.getControl());
-//		menu.addMenuListener(new MenuListener() {
-//			IStructuredSelection selection = treeViewer.getStructuredSelection();
-//			ContextMenuHandler.execute(selection, mgr, menu);
-//		});
-//		MenuItem addGroupItem = new MenuItem(menuFolder, SWT.PUSH);
-//		addGroupItem.setText("Add new Group");
-//		addGroupItem.addSelectionListener(this);
-//		MenuItem delAllGroupItem = new MenuItem(menuFolder, SWT.PUSH);
-//		delAllGroupItem.setText("Delete all Group");
-//		treeViewer.getTree().setMenu(menuFolder);
-
-//		mgr.addMenuListener(manager -> {
-//			IStructuredSelection selection = treeViewer.getStructuredSelection();
-//			ContextMenuHandler.execute(selection, mgr, menu);
-//		});
 
 		MenuManager mgr = new MenuManager();
 		Menu menu = mgr.createContextMenu(treeViewer.getControl());
@@ -73,31 +57,38 @@ public class TreeGroupView extends SelectionAdapter {
 				}
 				if (treeViewer.getSelection() instanceof IStructuredSelection) {
 					IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-					PersonAbstr object = (PersonAbstr) selection.getFirstElement();
-
-					if (object instanceof PersonGroup) {
-						manager.add(new AddGroupAction());
-						manager.add(new DelAllGroupAction());
-					} else if (object instanceof Person) {
-
-//                        manager.add(new OtherAction());
-
+					PersonAbstr objectTree = (PersonAbstr) selection.getFirstElement();
+					if (objectTree instanceof PersonGroup && objectTree.getName().equals("Folder")) {
+						manager.add(new AddGroupAction("New Group"));
+						manager.add(new DelAllGroupAction("Delete all Group"));
+					} else if (objectTree instanceof PersonGroup && !objectTree.getName().equals("Folder")) {
+                        manager.add(new DeleteGroupAction("Delete Group"));
+                        manager.add(new AddStudentAction("Add new Student"));
+					} else if (objectTree instanceof Person) {
+						
+						// wrong Action! Only for test!!!
+						manager.add(new DeleteGroupAction("Edit Student info"));
+                        manager.add(new AddStudentAction("Delete Student"));
 					}
 				}
 			}
 		});
+		//потом убрать!!
+		part.setDirty(true);
+		
 		mgr.setRemoveAllWhenShown(true);
 		treeViewer.getControl().setMenu(menu);
+		treeViewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
 		treeViewer.setInput(root);
 	}
 
 	private void createPersonsModel() {
-		root = new PersonGroup(null, "");
+		root = new PersonGroup(null, "ppp");
 		PersonGroup folder = new PersonGroup(root, "Folder");
 		root.addPerson(folder);
-		PersonGroup gr1 = new PersonGroup(root, "Group 1");
-		PersonGroup gr2 = new PersonGroup(root, "Group 2");
-		PersonGroup gr3 = new PersonGroup(root, "Group 3");
+		PersonGroup gr1 = new PersonGroup(folder, "Group 1");
+		PersonGroup gr2 = new PersonGroup(folder, "Group 2");
+		PersonGroup gr3 = new PersonGroup(folder, "Group 3");
 		folder.addPerson(gr1);
 		folder.addPerson(gr2);
 		folder.addPerson(gr3);
@@ -118,6 +109,10 @@ public class TreeGroupView extends SelectionAdapter {
 	@Persist
 	public void save() {
 		part.setDirty(false);
+	}
+
+	public PersonGroup getRoot() {
+		return root;
 	}
 
 }

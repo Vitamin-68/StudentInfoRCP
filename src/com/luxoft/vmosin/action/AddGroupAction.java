@@ -16,9 +16,9 @@ public class AddGroupAction extends Action {
 	@Inject
 	PersonGroup gr;
 
-//	public AddGroupAction() {
-//		
-//	}
+	public AddGroupAction(String string) {
+		super.setText(string);
+	}
 
 	public void run() {
 		persons.add(new PersonGroup(persons.get(0).getParent(), "Group 4"));
