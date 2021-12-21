@@ -4,6 +4,7 @@ package com.luxoft.vmosin.parts;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
@@ -30,6 +31,7 @@ import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
 import com.luxoft.vmosin.handlers.ContextMenuHandler;
 
+@Singleton
 public class TreeGroupView extends SelectionAdapter {
 
 	private TreeViewer treeViewer;
@@ -53,7 +55,7 @@ public class TreeGroupView extends SelectionAdapter {
 			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				if (treeViewer.getSelection().isEmpty()) {
-					return;
+					return;	
 				}
 				if (treeViewer.getSelection() instanceof IStructuredSelection) {
 					IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
@@ -73,8 +75,8 @@ public class TreeGroupView extends SelectionAdapter {
 				}
 			}
 		});
-		//потом убрать!!
-		part.setDirty(true);
+//		//потом убрать!!
+//		part.setDirty(true);
 		
 		mgr.setRemoveAllWhenShown(true);
 		treeViewer.getControl().setMenu(menu);
@@ -113,6 +115,14 @@ public class TreeGroupView extends SelectionAdapter {
 
 	public PersonGroup getRoot() {
 		return root;
+	}
+	
+	public void setRoot(PersonGroup root) {
+		this.root = root;
+	}
+	
+	public TreeViewer getTreeViewer() {
+		return treeViewer;
 	}
 
 }

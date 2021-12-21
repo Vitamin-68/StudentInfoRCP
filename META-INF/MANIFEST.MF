@@ -3,6 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: StudentInfoRCP
 Bundle-SymbolicName: StudentInfoRCP;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: libs/json-20210307.jar,
+ .
 Bundle-Vendor: MOSIN
 Require-Bundle: javax.inject;bundle-version="0.0.0",
  org.eclipse.core.runtime;bundle-version="0.0.0",
@@ -12,8 +14,6 @@ Require-Bundle: javax.inject;bundle-version="0.0.0",
  org.eclipse.e4.core.di;bundle-version="0.0.0",
  org.eclipse.e4.ui.di;bundle-version="0.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Import-Package: javax.annotation;version="0.0.0";resolution:=optional,
- javax.inject;version="0.0.0"
 Automatic-Module-Name: StudentInfoRCP
-Bundle-ClassPath: libs/json-20210307.jar,
- .
+Import-Package: javax.annotation;version="0.0.0";resolution:=optional,
+ javax.inject;version="1.0.0"

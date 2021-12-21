@@ -1,6 +1,6 @@
 package com.luxoft.vmosin.entity;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
 
 import org.eclipse.core.runtime.ListenerList;
@@ -10,7 +10,7 @@ public class PersonGroup extends PersonAbstr {
 	private PersonGroup parent;
 	private String name;
 	private List<PersonAbstr> persons;
-	private ListenerList listeners;
+//	private ListenerList listeners;
 
 	public PersonGroup(PersonGroup parent, String name) {
 		this.parent = parent;

@@ -2,8 +2,6 @@ package com.luxoft.vmosin.handlers;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -30,11 +28,10 @@ public class SaveHandler {
 	}
 
 	@Execute
-	public static void execute(EPartService partService, Shell shell) {
-		partService.saveAll(false);
+	public static void execute(EPartService partService) {
 		PersonGroup personGroup = ((TreeGroupView) partService.findPart("studentinforcp.part.groupview").getObject()).getRoot();
 		PersonAbstr[] objArray = personGroup.getPersons();
-		FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+		FileDialog dialog = new FileDialog(new Shell(), SWT.SAVE);
 		dialog.setFilterExtensions(new String[] { "*.json", "*.*" });
 		String fileName = dialog.open();
 		JSONArray jsonArr = new JSONArray();
@@ -67,6 +64,7 @@ public class SaveHandler {
 		}
 		try (FileWriter file = new FileWriter(fileName)) {
 			file.write(jsonArr.toString());
+			partService.saveAll(false);
 		} catch (IOException e) {
 			System.out.println(e);
 		}

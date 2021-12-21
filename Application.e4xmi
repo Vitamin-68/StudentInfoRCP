@@ -28,7 +28,7 @@
         <children xsi:type="menu:HandledToolItem" xmi:id="_6wlLmMgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.trimbar.top.save" iconURI="platform:/plugin/StudentInfoRCP/icons/save.png" tooltip="Save file" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
         <children xsi:type="menu:ToolBarSeparator" xmi:id="_OQ9FMFbuEeyCpdrMg7p_BQ" elementId="studentinforcp.toolbarseparator.0"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_VUTMIFbuEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.trimbar.top.new" label="New" iconURI="platform:/plugin/StudentInfoRCP/icons/new.png" tooltip="Add new person" command="_Fw9zYFbpEeyCpdrMg7p_BQ"/>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_tuQZkFbuEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.trimbar.top.edit" label="Edit" iconURI="platform:/plugin/StudentInfoRCP/icons/edit.png" command="_r98EwFbpEeyCpdrMg7p_BQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_tuQZkFbuEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.trimbar.top.edit" label="Edit" iconURI="platform:/plugin/StudentInfoRCP/icons/edit.png" tooltip="Edit person info" command="_r98EwFbpEeyCpdrMg7p_BQ"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_1k8pAFbuEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.trimbar.top.delete" label="Delete" iconURI="platform:/plugin/StudentInfoRCP/icons/delete.png" tooltip="Delete person info" command="_y5uyMFbpEeyCpdrMg7p_BQ"/>
         <children xsi:type="menu:ToolBarSeparator" xmi:id="_Bgt3cFbvEeyCpdrMg7p_BQ" elementId="studentinforcp.toolbarseparator.1"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_B7wNoFbvEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.trimbar.top.quit" label="Quit" iconURI="platform:/plugin/StudentInfoRCP/icons/quit.png" tooltip="Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
@@ -40,6 +40,7 @@
   <handlers xmi:id="_6wlLhMgZEeSyMNYR5xypkQ" elementId="com.luxoft.vmosin.handler.saveCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.SaveHandler" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
   <handlers xmi:id="_6wlLh8gZEeSyMNYR5xypkQ" elementId="com.luxoft.vmosin.handler.aboutCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.AboutHandler" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
   <handlers xmi:id="_X9VxEFoGEeyN2toqU2UZKg" elementId="com.luxoft.vmosin.handler.newCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.NewHandler" command="_Fw9zYFbpEeyCpdrMg7p_BQ"/>
+  <handlers xmi:id="_J8PkkGD7EeypdsBK3-mqPg" elementId="studentinforcp.handler.editStudentInfo" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.EditHandler" command="_r98EwFbpEeyCpdrMg7p_BQ"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLhcgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.keybinding.m1s" keySequence="M1+S" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
