@@ -8,18 +8,18 @@
       <children xsi:type="basic:PartStack" xmi:id="_VzNyMFbtEeyCpdrMg7p_BQ" elementId="studentinforcp.partstack.editor" containerData="7000" accessibilityPhrase=""/>
     </children>
     <mainMenu xmi:id="_6wlLicgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.main.menu">
-      <children xsi:type="menu:Menu" xmi:id="_6wlLisgZEeSyMNYR5xypkQ" elementId="file" label="File">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLi8gZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.file.open" label="Open" iconURI="platform:/plugin/StudentInfoRCP/icons/open_menu.png" tooltip="Open file" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjMgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.file.save" label="Save" iconURI="platform:/plugin/StudentInfoRCP/icons/save_menu.png" tooltip="Save file" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjcgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.file.quit" label="Quit" iconURI="platform:/plugin/StudentInfoRCP/icons/quit_menu.png" tooltip="Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
+      <children xsi:type="menu:Menu" xmi:id="_6wlLisgZEeSyMNYR5xypkQ" elementId="file" label="&amp;File">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLi8gZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.file.open" label="&amp;Open" iconURI="platform:/plugin/StudentInfoRCP/icons/open_menu.png" tooltip="Open file" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjMgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.file.save" label="&amp;Save" iconURI="platform:/plugin/StudentInfoRCP/icons/save_menu.png" tooltip="Save file" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjcgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.file.quit" label="&amp;Quit" iconURI="platform:/plugin/StudentInfoRCP/icons/quit_menu.png" tooltip="Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
       </children>
-      <children xsi:type="menu:Menu" xmi:id="_BBYz8FbrEeyCpdrMg7p_BQ" elementId="edit" label="Edit">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_HhjVUFbrEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.edit.new" label="New" iconURI="platform:/plugin/StudentInfoRCP/icons/new_menu.png" tooltip="Add new person" command="_Fw9zYFbpEeyCpdrMg7p_BQ"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_Op1xMFbsEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.edit.edit" label="Edit" iconURI="platform:/plugin/StudentInfoRCP/icons/edit_menu.png" tooltip="Edit person" command="_r98EwFbpEeyCpdrMg7p_BQ"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_WSGjEFbsEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.edit.delete" label="Delete" iconURI="platform:/plugin/StudentInfoRCP/icons/delete_menu.png" tooltip="Delete person" command="_y5uyMFbpEeyCpdrMg7p_BQ"/>
+      <children xsi:type="menu:Menu" xmi:id="_BBYz8FbrEeyCpdrMg7p_BQ" elementId="edit" label="&amp;Edit">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_HhjVUFbrEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.edit.new" label="&amp;New" iconURI="platform:/plugin/StudentInfoRCP/icons/new_menu.png" tooltip="Add new student" command="_Fw9zYFbpEeyCpdrMg7p_BQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Op1xMFbsEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.edit.edit" label="&amp;Edit" iconURI="platform:/plugin/StudentInfoRCP/icons/edit_menu.png" tooltip="Edit student info" command="_r98EwFbpEeyCpdrMg7p_BQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_WSGjEFbsEeyCpdrMg7p_BQ" elementId="StudentInfoRCP.handleditem.edit.delete" label="&amp;Delete" iconURI="platform:/plugin/StudentInfoRCP/icons/delete_menu.png" tooltip="Delete student" command="_y5uyMFbpEeyCpdrMg7p_BQ"/>
       </children>
-      <children xsi:type="menu:Menu" xmi:id="_6wlLjsgZEeSyMNYR5xypkQ" elementId="help" label="Help">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLj8gZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.about" label="About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
+      <children xsi:type="menu:Menu" xmi:id="_6wlLjsgZEeSyMNYR5xypkQ" elementId="help" label="&amp;Help">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLj8gZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.handleditem.about" label="&amp;About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_6wlLlcgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.trimbar.top">

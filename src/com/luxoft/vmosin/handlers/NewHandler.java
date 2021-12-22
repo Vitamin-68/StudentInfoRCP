@@ -27,13 +27,20 @@ public class NewHandler {
 		}
 		TreeViewer treeViewer = ((TreeGroupView) partService.getActivePart().getObject()).getTreeViewer();
 		IStructuredSelection selection = treeViewer.getStructuredSelection();
+		if (!(selection.getFirstElement() instanceof PersonGroup)
+				|| !((PersonGroup) selection.getFirstElement()).getParent().getName().equals("Folder")) {
+			return;
+		}
 		MPartStack stack = (MPartStack) modelService.find("studentinforcp.partstack.editor", application);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 		part.setContributionURI("bundleclass://StudentInfoRCP/com.luxoft.vmosin.parts.StudentEditInfo");
 		part.setCloseable(true);
-		part.setLabel("New person");
-		((StudentEditInfo) part.getObject()).setPerson(new Person("", new PersonGroup(null, ""), "", "", 0));
+		part.setLabel("New student");
+		PersonGroup pg = (PersonGroup) selection.getFirstElement();
+		Person p = new Person("", pg, "", "", 0);
+		pg.addPerson(p);
 		stack.getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
+		((StudentEditInfo) part.getObject()).setPerson(p);
 	}
 }

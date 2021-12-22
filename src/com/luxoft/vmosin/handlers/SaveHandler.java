@@ -22,7 +22,8 @@ public class SaveHandler {
 	@CanExecute
 	public boolean canExecute(EPartService partService) {
 		if (partService != null) {
-			return !partService.getDirtyParts().isEmpty();
+			return partService.findPart("studentinforcp.part.groupview").isDirty();
+//			return !partService.getDirtyParts().isEmpty();
 		}
 		return false;
 	}
