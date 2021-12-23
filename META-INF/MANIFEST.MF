@@ -16,4 +16,5 @@ Require-Bundle: javax.inject;bundle-version="0.0.0",
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: StudentInfoRCP
 Import-Package: javax.annotation;version="0.0.0";resolution:=optional,
- javax.inject;version="1.0.0"
+ javax.inject;version="1.0.0",
+ org.eclipse.e4.core.di.extensions;version="0.16.0"
