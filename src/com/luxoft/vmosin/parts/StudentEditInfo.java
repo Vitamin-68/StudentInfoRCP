@@ -8,9 +8,8 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -19,32 +18,35 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
-import com.luxoft.vmosin.handlers.SaveHandler;
 
 public class StudentEditInfo {
 
 	private Person inputPerson;
 	private Text fieldName;
-	private Canvas photo;
+	private Canvas studentPhoto;
+	private Image studentImage;
+	private String photoName;
 	private Text fieldGroup;
 	private Text fieldAddress;
 	private Text fieldCity;
 	private Text fieldResult;
 	private KeyAdapter txtFieldListener;
+	private final String photoPath = "/source/photo/";
 
 	@Inject
 	public MPart part;
@@ -66,27 +68,21 @@ public class StudentEditInfo {
 		fieldName = new Text(parent, SWT.LEFT | SWT.BORDER);
 		fieldName.setLayoutData(gridData);
 		fieldName.addKeyListener(getTextFieldListener(partService));
-//				new KeyAdapter() {
-//
-//			@Override
-//			public void keyPressed(KeyEvent e) {
-//				partService.getActivePart().setDirty(true);
-//				super.keyPressed(e);
-//			}
-//		});
-		photo = new Canvas(parent, SWT.BORDER);
+		studentPhoto = new Canvas(parent, SWT.BORDER);
 		gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
 		gridData.widthHint = 60;
 		gridData.heightHint = 60;
 		gridData.horizontalSpan = 3;
 		gridData.verticalSpan = 6;
-		photo.setLayoutData(gridData);
-		photo.addPaintListener(new PaintListener() {
+		if (photoName != null) {
+			studentImage = ImageDescriptor.createFromURL(getClass().getResource(photoPath + photoName)).createImage();
+		}
+		studentPhoto.setLayoutData(gridData);
+		studentPhoto.addPaintListener(new PaintListener() {
 			public void paintControl(final PaintEvent event) {
-//	        if (dogImage != null) 
-//	        {
-//	          event.gc.drawImage(dogImage, 0, 0);
-//	        }
+				if (studentImage != null) {
+					event.gc.drawImage(studentImage, 0, 0);
+				}
 			}
 		});
 		label = new Label(parent, SWT.RIGHT);
@@ -126,7 +122,6 @@ public class StudentEditInfo {
 				if (!e.text.matches("[0-9]")) {
 					e.doit = false;
 				}
-//				partService.getActivePart().setDirty(true);
 			}
 		});
 		gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -135,31 +130,33 @@ public class StudentEditInfo {
 		label.setText("* – required fields");
 		label.setLayoutData(gridData);
 		gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		gridData.horizontalSpan = 6;
+		gridData.horizontalSpan = 3;
 		Button saveButton = new Button(parent, SWT.PUSH);
 		saveButton.setLayoutData(gridData);
 		saveButton.setText("Save");
 		saveButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (fieldName.getText().trim().isEmpty() || fieldGroup.getText().trim().isEmpty()) {
-					MessageDialog.openInformation(parent.getShell(), "Warning!", "Fields \"Name\" and \"Group?\" not allow be empty!");
+					MessageDialog.openInformation(parent.getShell(), "Warning!",
+							"Fields \"Name\" and \"Group?\" not allow be empty!");
 					return;
 				}
-				MPart part = partService.findPart("studentinforcp.part.groupview");
-				PersonGroup root = ((TreeGroupView) part.getObject()).getRoot();
+				MPart groupViewPart = partService.findPart("studentinforcp.part.groupview");
+				PersonGroup root = ((TreeGroupView) groupViewPart.getObject()).getRoot();
 				PersonGroup folder = (PersonGroup) root.getPersons()[0];
-				TreeViewer treeViewer = ((TreeGroupView) part.getObject()).getTreeViewer();
+				TreeViewer treeViewer = ((TreeGroupView) groupViewPart.getObject()).getTreeViewer();
 				if (!fieldGroup.getText().equals(inputPerson.getParent().getName())) {
 					inputPerson.setGroup(moveToOtherGroup(folder));
 				}
 				inputPerson.setName(fieldName.getText());
 				inputPerson.setAddress(fieldAddress.getText());
 				inputPerson.setCity(fieldCity.getText());
+				inputPerson.setPhotoName(photoName);
 				inputPerson.setResult(Integer.parseInt(fieldResult.getText()));
 				partService.findPart("studentinforcp.part.groupview").setDirty(true);
 				partService.getActivePart().setDirty(false);
 				partService.getActivePart().setLabel(fieldName.getText());
-				((TreeGroupView) part.getObject()).setRoot(root);
+				((TreeGroupView) groupViewPart.getObject()).setRoot(root);
 				treeViewer.setInput(root);
 				treeViewer.refresh();
 			}
@@ -182,6 +179,19 @@ public class StudentEditInfo {
 				return newGroup;
 			}
 		});
+		Button addPhotoButton = new Button(parent, SWT.PUSH);
+		addPhotoButton.setLayoutData(gridData);
+		addPhotoButton.setText("Add photo...");
+		addPhotoButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent event) {
+				String fileName = new FileDialog(parent.getShell()).open();
+				if (fileName != null) {
+					studentImage = new Image(parent.getDisplay(), fileName);
+					photoName = getNameFromPath(fileName);
+					partService.getActivePart().setDirty(true);
+				}
+			}
+		});
 	}
 
 	@PreDestroy
@@ -202,11 +212,12 @@ public class StudentEditInfo {
 	public void setPerson(Person person) {
 		this.inputPerson = person;
 		this.fieldName.setText(inputPerson.getName());
-//		this.photo = photo;
+		this.photoName = inputPerson.getPhotoName();
 		this.fieldGroup.setText(inputPerson.getParent().getName());
 		this.fieldAddress.setText(inputPerson.getAddress());
 		this.fieldCity.setText(inputPerson.getCity());
 		this.fieldResult.setText(String.valueOf(inputPerson.getResult()));
+		studentImage = ImageDescriptor.createFromURL(getClass().getResource(photoPath + photoName)).createImage();
 	}
 
 	private KeyAdapter getTextFieldListener(EPartService partService) {
@@ -221,5 +232,10 @@ public class StudentEditInfo {
 			};
 		}
 		return txtFieldListener;
+	}
+	
+	private String getNameFromPath(String path) {
+		int idx = path.replaceAll("\\\\", "/").lastIndexOf("/");
+		return idx >= 0 ? path.substring(idx + 1) : path;
 	}
 }

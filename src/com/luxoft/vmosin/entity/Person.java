@@ -6,14 +6,16 @@ public class Person extends PersonAbstr {
 	private PersonGroup group;
 	private String address;
 	private String city;
+	private String photoName;
 	private int result;
 
-	public Person(String name, PersonGroup group, String address, String city, int result) {
+	public Person(String name, PersonGroup group, String address, String city, String photoPath, int result) {
 		super();
 		this.name = name;
 		this.group = group;
 		this.address = address;
 		this.city = city;
+		this.photoName = photoPath;
 		this.result = result;
 	}
 
@@ -57,9 +59,16 @@ public class Person extends PersonAbstr {
 		this.result = result;
 	}
 
+	public String getPhotoName() {
+		return photoName;
+	}
+
+	public void setPhotoName(String photoPath) {
+		this.photoName = photoPath;
+	}
+
 	@Override
 	public String toString() {
 		return name;
 	}
-
 }

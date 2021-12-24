@@ -41,6 +41,7 @@
   <handlers xmi:id="_X9VxEFoGEeyN2toqU2UZKg" elementId="com.luxoft.vmosin.handler.newCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.NewHandler" command="_Fw9zYFbpEeyCpdrMg7p_BQ"/>
   <handlers xmi:id="_J8PkkGD7EeypdsBK3-mqPg" elementId="studentinforcp.handler.editStudentInfo" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.EditHandler" command="_r98EwFbpEeyCpdrMg7p_BQ"/>
   <handlers xmi:id="_6wlLh8gZEeSyMNYR5xypkQ" elementId="com.luxoft.vmosin.handler.aboutCommand" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.AboutHandler" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_kJRTQGRKEeynjsIgJD4cZA" elementId="studentinforcp.ui.edit.deleteHandler" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.handlers.DeleteHandler" command="_y5uyMFbpEeyCpdrMg7p_BQ"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLhcgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.keybinding.m1s" keySequence="M1+S" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
@@ -57,7 +58,7 @@
   <commands xmi:id="_6wlLgMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.open" commandName="openCommand"/>
   <commands xmi:id="_6wlLg8gZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
   <commands xmi:id="_6wlLfMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
-  <commands xmi:id="_Fw9zYFbpEeyCpdrMg7p_BQ" elementId="org.eclipse.ui.window.newEditor" commandName="newCommand"/>
+  <commands xmi:id="_Fw9zYFbpEeyCpdrMg7p_BQ" elementId="studentinforcp.ui.edit.newStudentCommand" commandName="newCommand"/>
   <commands xmi:id="_r98EwFbpEeyCpdrMg7p_BQ" elementId="studentinforcp.ui.edit.editCommand" commandName="editCommand"/>
   <commands xmi:id="_y5uyMFbpEeyCpdrMg7p_BQ" elementId="studentinforcp.ui.edit.deleteCommand" commandName="deleteCommand"/>
   <commands xmi:id="_6wlLhsgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>

@@ -54,6 +54,7 @@ public class SaveHandler {
 					jsonPerson.put("group", ((Person) persons[j]).getParent());
 					jsonPerson.put("address", ((Person) persons[j]).getAddress());
 					jsonPerson.put("city", ((Person) persons[j]).getCity());
+					jsonPerson.put("photo", ((Person) persons[j]).getPhotoName());
 					jsonPerson.put("result", ((Person) persons[j]).getResult());
 					jsonPersonArr.put(jsonPerson);
 				}

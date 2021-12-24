@@ -5,18 +5,14 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.core.di.extensions.EventTopic;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
-import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -28,16 +24,14 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
-import com.luxoft.vmosin.action.AddGroupAction;
+import com.luxoft.vmosin.action.AddAction;
 import com.luxoft.vmosin.action.AddStudentAction;
 import com.luxoft.vmosin.action.DelAllGroupAction;
 import com.luxoft.vmosin.action.DeleteGroupAction;
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
-import com.luxoft.vmosin.handlers.EditHandler;
 
 @Singleton
 public class TreeGroupView extends SelectionAdapter {
@@ -48,12 +42,14 @@ public class TreeGroupView extends SelectionAdapter {
 	@Inject
 	private MPart part;
 	
+	@Inject ECommandService commandService;
+	@Inject EHandlerService service;
+	
 	@PostConstruct
 	public void createComposite(Composite parent) {
 		treeViewer = new TreeViewer(parent);
 		treeViewer.setLabelProvider(new MyLabelProvider());
 		treeViewer.setContentProvider(new MyContentProvider());
-//		treeViewer.addlist
 		createPersonsModel();
 
 		MenuManager mgr = new MenuManager();
@@ -68,7 +64,8 @@ public class TreeGroupView extends SelectionAdapter {
 					IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
 					PersonAbstr objectTree = (PersonAbstr) selection.getFirstElement();
 					if (objectTree instanceof PersonGroup && objectTree.getName().equals("Folder")) {
-						manager.add(new AddGroupAction("New Group"));
+						manager.add(
+								new AddAction("New Group"));
 						manager.add(new DelAllGroupAction("Delete all Group"));
 					} else if (objectTree instanceof PersonGroup && !objectTree.getName().equals("Folder")) {
 						manager.add(new DeleteGroupAction("Delete Group"));
@@ -177,12 +174,12 @@ public class TreeGroupView extends SelectionAdapter {
 		folder.addPerson(gr1);
 		folder.addPerson(gr2);
 		folder.addPerson(gr3);
-		gr1.addPerson(new Person("Nick", gr1, "addr 1", "city 1", 5));
-		gr1.addPerson(new Person("John", gr1, "addr 2", "city 2", 4));
-		gr2.addPerson(new Person("Anna", gr2, "addr 3", "city 3", 3));
-		gr3.addPerson(new Person("Jack", gr3, "addr 4", "city 4", 2));
-		gr3.addPerson(new Person("Liza", gr3, "addr 5", "city 5", 1));
-		gr3.addPerson(new Person("Elvis", gr3, "addr 6", "city 6", 4));
+		gr1.addPerson(new Person("Nick", gr1, "addr 1", "city 1", "", 5));
+		gr1.addPerson(new Person("John", gr1, "addr 2", "city 2", "", 4));
+		gr2.addPerson(new Person("Anna", gr2, "addr 3", "city 3", "", 3));
+		gr3.addPerson(new Person("Jack", gr3, "addr 4", "city 4", "", 2));
+		gr3.addPerson(new Person("Liza", gr3, "addr 5", "city 5", "", 1));
+		gr3.addPerson(new Person("Elvis", gr3, "addr 6", "city 6", "", 4));
 
 	}
 

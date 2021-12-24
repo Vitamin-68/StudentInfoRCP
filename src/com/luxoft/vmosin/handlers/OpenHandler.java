@@ -51,13 +51,14 @@ public class OpenHandler {
 					for (int n = 0; n < jsonPersonArray.length(); n++) {
 						JSONObject personObj = jsonPersonArray.getJSONObject(n);
 						Person pesron = new Person(personObj.getString("name"), groups, personObj.getString("address"),
-								personObj.getString("city"), personObj.getInt("result"));
+								personObj.getString("city"), personObj.getString("photo"), personObj.getInt("result"));
 						groups.addPerson(pesron);
 					}
 				}
 			}
 			((TreeGroupView) treeGroupView.getObject()).setRoot(newRoot);
-			((TreeGroupView) partService.findPart("studentinforcp.part.groupview").getObject()).getTreeViewer().setInput(newRoot);
+			((TreeGroupView) partService.findPart("studentinforcp.part.groupview").getObject()).getTreeViewer()
+					.setInput(newRoot);
 		}
 	}
 }

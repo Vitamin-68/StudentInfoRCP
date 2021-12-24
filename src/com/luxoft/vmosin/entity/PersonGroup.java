@@ -10,7 +10,6 @@ public class PersonGroup extends PersonAbstr {
 	private PersonGroup parent;
 	private String name;
 	private List<PersonAbstr> persons;
-//	private ListenerList listeners;
 
 	public PersonGroup(PersonGroup parent, String name) {
 		this.parent = parent;
@@ -41,7 +40,6 @@ public class PersonGroup extends PersonAbstr {
 			if (persons.isEmpty())
 				persons = null;
 		}
-//		fireContactsChanged(null);
 	}
 
 	public PersonAbstr[] getPersons() {
