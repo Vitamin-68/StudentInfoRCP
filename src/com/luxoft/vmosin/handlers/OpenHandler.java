@@ -5,7 +5,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -19,7 +23,7 @@ import com.luxoft.vmosin.parts.TreeGroupView;
 public class OpenHandler {
 
 	@Execute
-	public void execute(EPartService partService) {
+	public void execute(EPartService partService, EModelService modelService, MApplication application) {
 		FileDialog dialog = new FileDialog(new Shell());
 		dialog.setFilterExtensions(new String[] { "*.json", "*.*" });
 		String fn = dialog.open();
@@ -56,9 +60,19 @@ public class OpenHandler {
 					}
 				}
 			}
+
+			// попытка закрыть оставшиеся вкладки в редакторе после загрузки нового файла
+//			MPartStack stack = (MPartStack) modelService.find("studentinforcp.partstack.editor", application);
+//			for (int i = 0; i < stack.getChildren().size(); i++) {
+//				partService.hidePart((MPart) stack.getChildren().get(i), true);
+////			    stack.getChildren().remove(0);
+//			}
+
 			((TreeGroupView) treeGroupView.getObject()).setRoot(newRoot);
 			((TreeGroupView) partService.findPart("studentinforcp.part.groupview").getObject()).getTreeViewer()
 					.setInput(newRoot);
+			treeGroupView.setDirty(false);
+
 		}
 	}
 }

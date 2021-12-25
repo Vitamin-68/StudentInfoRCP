@@ -10,27 +10,19 @@ import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
+import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
-import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
-import com.luxoft.vmosin.action.AddAction;
-import com.luxoft.vmosin.action.AddStudentAction;
-import com.luxoft.vmosin.action.DelAllGroupAction;
-import com.luxoft.vmosin.action.DeleteGroupAction;
 import com.luxoft.vmosin.entity.Person;
-import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
 
 @Singleton
@@ -39,48 +31,17 @@ public class TreeGroupView extends SelectionAdapter {
 	private TreeViewer treeViewer;
 	private PersonGroup root;
 
-	@Inject
-	private MPart part;
-	
-	@Inject ECommandService commandService;
-	@Inject EHandlerService service;
+	@Inject	private MPart part;
+//	@Inject private ECommandService commandService;
+//	@Inject private EHandlerService service;
 	
 	@PostConstruct
-	public void createComposite(Composite parent) {
+	public void createComposite(Composite parent, EMenuService menuService) {
 		treeViewer = new TreeViewer(parent);
 		treeViewer.setLabelProvider(new MyLabelProvider());
 		treeViewer.setContentProvider(new MyContentProvider());
 		createPersonsModel();
 
-		MenuManager mgr = new MenuManager();
-		Menu menu = mgr.createContextMenu(treeViewer.getControl());
-		mgr.addMenuListener(new IMenuListener() {
-			@Override
-			public void menuAboutToShow(IMenuManager manager) {
-				if (treeViewer.getSelection().isEmpty()) {
-					return;
-				}
-				if (treeViewer.getSelection() instanceof IStructuredSelection) {
-					IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-					PersonAbstr objectTree = (PersonAbstr) selection.getFirstElement();
-					if (objectTree instanceof PersonGroup && objectTree.getName().equals("Folder")) {
-						manager.add(
-								new AddAction("New Group"));
-						manager.add(new DelAllGroupAction("Delete all Group"));
-					} else if (objectTree instanceof PersonGroup && !objectTree.getName().equals("Folder")) {
-						manager.add(new DeleteGroupAction("Delete Group"));
-						manager.add(new AddStudentAction("Add new Student"));
-					} else if (objectTree instanceof Person) {
-
-						// wrong Action! Only for test!!!
-						manager.add(new DeleteGroupAction("Edit Student info"));
-						manager.add(new AddStudentAction("Delete Student"));
-					}
-				}
-			}
-		});
-
-		mgr.setRemoveAllWhenShown(true);
 		Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer() };
 		int operations = DND.DROP_MOVE | DND.DROP_COPY;
 		treeViewer.addDragSupport(operations, transfers, new DragSourceListener() {
@@ -88,7 +49,6 @@ public class TreeGroupView extends SelectionAdapter {
 			public void dragStart(DragSourceEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
 				if (!(selection.getFirstElement() instanceof Person)) {
-//					MessageDialog.openInformation(parent.getShell(), "Mess", "Yes!");
 					event.doit = false;
 				}
 			}
@@ -111,18 +71,16 @@ public class TreeGroupView extends SelectionAdapter {
 
 		});
 		
-		treeViewer.addDropSupport(DND.DROP_MOVE, transfers, new DropTargetListener() {
+		treeViewer.addDropSupport(DND.DROP_MOVE, transfers, new DropTargetAdapter() {
 
 			@Override
 			public void dragEnter(DropTargetEvent event) {
 				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void dragLeave(DropTargetEvent event) {
 				// TODO Auto-generated method stub
-				System.out.println("out");
 
 			}
 
@@ -135,7 +93,6 @@ public class TreeGroupView extends SelectionAdapter {
 			@Override
 			public void dragOver(DropTargetEvent event) {
 				// TODO Auto-generated method stub
-
 			}
 
 			@Override
@@ -159,7 +116,8 @@ public class TreeGroupView extends SelectionAdapter {
 			}
 
 		});
-		treeViewer.getControl().setMenu(menu);
+		
+		menuService.registerContextMenu(treeViewer.getControl(), "studentinforcp.popupmenu.popupmenu");
 		treeViewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
 		treeViewer.setInput(root);
 	}

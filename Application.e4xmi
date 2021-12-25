@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_6wlLcMgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.application" bindingContexts="_6wlLecgZEeSyMNYR5xypkQ">
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_6wlLcMgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.application" bindingContexts="_6wlLecgZEeSyMNYR5xypkQ">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_6wlLccgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.window.main" label="Student Info" x="500" y="300" width="800" height="400">
     <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="StudentInfoRCP.partsashcontainer.sample" accessibilityPhrase="" horizontal="true">
       <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="studentinforcp.partstack.viewer" containerData="3000">
-        <children xsi:type="basic:Part" xmi:id="_DdexAFbtEeyCpdrMg7p_BQ" elementId="studentinforcp.part.groupview" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.parts.TreeGroupView" label="Group View"/>
+        <children xsi:type="basic:Part" xmi:id="_DdexAFbtEeyCpdrMg7p_BQ" elementId="studentinforcp.part.groupview" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.parts.TreeGroupView" label="Group View">
+          <menus xsi:type="menu:PopupMenu" xmi:id="_-ShdkGUaEeyqC4y6hPuonA" elementId="studentinforcp.popupmenu.popupmenu" label="popupMenu">
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_SHigMGUbEeyqC4y6hPuonA" elementId="studentinforcp.handledmenuitem.addnewgroup" label="Add new Group" iconURI="platform:/plugin/StudentInfoRCP/icons/new_menu.png" command="_Fw9zYFbpEeyCpdrMg7p_BQ">
+              <visibleWhen xsi:type="ui:ImperativeExpression" xmi:id="_kr55oGUjEeyqC4y6hPuonA" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.popupmenu.PopupMenuFolderImperative"/>
+            </children>
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_jo4QAGUbEeyqC4y6hPuonA" elementId="studentinforcp.handledmenuitem.deleteallgroups" label="Delete all Groups" iconURI="platform:/plugin/StudentInfoRCP/icons/delete_menu.png" command="_y5uyMFbpEeyCpdrMg7p_BQ">
+              <visibleWhen xsi:type="ui:ImperativeExpression" xmi:id="_j570sGUkEeyqC4y6hPuonA" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.popupmenu.PopupMenuFolderImperative"/>
+            </children>
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_-Sek0GUbEeyqC4y6hPuonA" elementId="studentinforcp.handledmenuitem.addnewstudent" label="Add new Student" iconURI="platform:/plugin/StudentInfoRCP/icons/new_menu.png" command="_Fw9zYFbpEeyCpdrMg7p_BQ">
+              <visibleWhen xsi:type="ui:ImperativeExpression" xmi:id="_nENi4GUlEeyqC4y6hPuonA" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.popupmenu.PopupMenuGroupImperative"/>
+            </children>
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_5IWpUGUbEeyqC4y6hPuonA" elementId="studentinforcp.handledmenuitem.deletegroup" label="Delete Group" iconURI="platform:/plugin/StudentInfoRCP/icons/delete_menu.png" command="_y5uyMFbpEeyCpdrMg7p_BQ">
+              <visibleWhen xsi:type="ui:ImperativeExpression" xmi:id="_th6JoGUmEeyqC4y6hPuonA" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.popupmenu.PopupMenuGroupImperative"/>
+            </children>
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_FbRMcGUcEeyqC4y6hPuonA" elementId="studentinforcp.handledmenuitem.editstudentinfo" label="Edit Student Info" iconURI="platform:/plugin/StudentInfoRCP/icons/edit_menu.png" command="_r98EwFbpEeyCpdrMg7p_BQ">
+              <visibleWhen xsi:type="ui:ImperativeExpression" xmi:id="_p29FYGUnEeyqC4y6hPuonA" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.popupmenu.PopupMenuStudentImperative"/>
+            </children>
+            <children xsi:type="menu:HandledMenuItem" xmi:id="_M5htwGUcEeyqC4y6hPuonA" elementId="studentinforcp.handledmenuitem.deletestudent" label="Delete Student" iconURI="platform:/plugin/StudentInfoRCP/icons/delete_menu.png" command="_y5uyMFbpEeyCpdrMg7p_BQ">
+              <visibleWhen xsi:type="ui:ImperativeExpression" xmi:id="_6yonkGUgEeyqC4y6hPuonA" contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.popupmenu.PopupMenuStudentImperative"/>
+            </children>
+          </menus>
+        </children>
       </children>
       <children xsi:type="basic:PartStack" xmi:id="_VzNyMFbtEeyCpdrMg7p_BQ" elementId="studentinforcp.partstack.editor" containerData="7000" accessibilityPhrase=""/>
     </children>
