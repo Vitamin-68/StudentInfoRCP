@@ -48,9 +48,6 @@ public class StudentEditInfo {
 	private KeyAdapter txtFieldListener;
 	private final String photoPath = "/source/photo/";
 
-	@Inject
-	public MPart part;
-
 	@PostConstruct
 	public void postConstruct(Composite parent, EPartService partService) {
 		GridLayout gridLayout = new GridLayout();

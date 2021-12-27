@@ -121,13 +121,11 @@ public class TreeGroupView extends SelectionAdapter {
 	            } catch (Exception ex) {
 	                throw new RuntimeException(String.format("command with id \"%s\" not found", nameEditCommand));
 	            }   
-
 			}
 
 			@Override
 			public void dragOperationChanged(DropTargetEvent event) {
 				// TODO Auto-generated method stub
-
 			}
 
 			@Override
@@ -137,6 +135,10 @@ public class TreeGroupView extends SelectionAdapter {
 
 			@Override
 			public void drop(DropTargetEvent event) {
+				movePersonToOtherGroup(event);
+			}
+
+			private void movePersonToOtherGroup(DropTargetEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
 				if ((event.item != null && event.item.getData() instanceof PersonGroup
 						&& !((PersonGroup) event.item.getData()).getName().equals("Folder"))) {
@@ -148,7 +150,7 @@ public class TreeGroupView extends SelectionAdapter {
 						p.setGroup(pg);
 						part.setDirty(true);
 					}
-				}
+				}				
 			}
 
 			@Override
@@ -172,7 +174,7 @@ public class TreeGroupView extends SelectionAdapter {
 		folder.addPerson(gr1);
 		folder.addPerson(gr2);
 		folder.addPerson(gr3);
-		gr1.addPerson(new Person("Nick", gr1, "addr 1", "city 1", "", 5));
+		gr1.addPerson(new Person("Nick", gr1, "addr 1", "city 1", "S_01.png", 5));
 		gr1.addPerson(new Person("John", gr1, "addr 2", "city 2", "", 4));
 		gr2.addPerson(new Person("Anna", gr2, "addr 3", "city 3", "", 3));
 		gr3.addPerson(new Person("Jack", gr3, "addr 4", "city 4", "", 2));

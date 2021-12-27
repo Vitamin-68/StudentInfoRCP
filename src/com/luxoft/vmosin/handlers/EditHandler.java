@@ -52,7 +52,7 @@ public class EditHandler {
 	}
 
 private boolean isPartExist(MPartStack stack, Person person, int ind) {
-	return ((MPart) stack.getChildren().get(ind)).getLabel().equals(person.getName());
+	return (((MPart) stack.getChildren().get(ind)).getLabel().equals(person.getName()) && ((MPart) stack.getChildren().get(ind)).getObject() != null);
 }
 	
 }
