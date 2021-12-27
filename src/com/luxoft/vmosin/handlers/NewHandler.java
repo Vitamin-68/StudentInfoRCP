@@ -66,8 +66,10 @@ public class NewHandler {
 					});
 
 			id.open();
-			folder.addPerson(new PersonGroup(folder, id.getValue()));
-			treeViewer.refresh();
+			if (id.getValue() != null) {
+				folder.addPerson(new PersonGroup(folder, id.getValue()));
+				treeViewer.refresh();
+			}
 		}
 	}
 }

@@ -5,6 +5,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Focus;
@@ -12,6 +14,8 @@ import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
@@ -20,20 +24,26 @@ import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.widgets.Composite;
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonGroup;
+import com.luxoft.vmosin.handlers.EditHandler;
+import com.luxoft.vmosin.handlers.NewHandler;
 
 @Singleton
 public class TreeGroupView extends SelectionAdapter {
 
 	private TreeViewer treeViewer;
 	private PersonGroup root;
+	private final String nameEditCommand = "studentinforcp.ui.edit.editCommand";
 
 	@Inject	private MPart part;
-//	@Inject private ECommandService commandService;
-//	@Inject private EHandlerService service;
+	@Inject private ECommandService commandService;
+	@Inject private EHandlerService service;
 	
 	@PostConstruct
 	public void createComposite(Composite parent, EMenuService menuService) {
@@ -70,7 +80,24 @@ public class TreeGroupView extends SelectionAdapter {
 			}
 
 		});
-		
+		treeViewer.addDoubleClickListener(event-> {
+		        IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+		        if (selection.isEmpty()) return;
+		        try {
+	                Command command = commandService.getCommand(nameEditCommand);
+	                if( !command.isDefined() )
+	                    return;
+	                ParameterizedCommand myCommand = commandService.createCommand(nameEditCommand, null);
+	                service.activateHandler(nameEditCommand, new EditHandler());
+	                if( !service.canExecute(myCommand ))
+	                    return;
+	                service.executeHandler( myCommand );
+	            } catch (Exception ex) {
+	                throw new RuntimeException(String.format("command with id \"%s\" not found", nameEditCommand));
+	            } 
+		        
+		    }
+		);
 		treeViewer.addDropSupport(DND.DROP_MOVE, transfers, new DropTargetAdapter() {
 
 			@Override
@@ -81,6 +108,19 @@ public class TreeGroupView extends SelectionAdapter {
 			@Override
 			public void dragLeave(DropTargetEvent event) {
 				// TODO Auto-generated method stub
+				
+				try {
+	                Command command = commandService.getCommand(nameEditCommand);
+	                if( !command.isDefined() )
+	                    return;
+	                ParameterizedCommand myCommand = commandService.createCommand(nameEditCommand, null);
+	                service.activateHandler(nameEditCommand, new EditHandler());
+	                if( !service.canExecute(myCommand ))
+	                    return;
+	                service.executeHandler( myCommand );
+	            } catch (Exception ex) {
+	                throw new RuntimeException(String.format("command with id \"%s\" not found", nameEditCommand));
+	            }   
 
 			}
 
