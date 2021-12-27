@@ -1,8 +1,9 @@
 package com.luxoft.vmosin.parts;
 
+import java.nio.file.Path;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
@@ -46,7 +47,7 @@ public class StudentEditInfo {
 	private Text fieldCity;
 	private Text fieldResult;
 	private KeyAdapter txtFieldListener;
-	private final String photoPath = "/source/photo/";
+	private final static String PHOTO_PATH = "/resources/photo/";
 
 	@PostConstruct
 	public void postConstruct(Composite parent, EPartService partService) {
@@ -72,7 +73,8 @@ public class StudentEditInfo {
 		gridData.horizontalSpan = 3;
 		gridData.verticalSpan = 6;
 		if (photoName != null) {
-			studentImage = ImageDescriptor.createFromURL(getClass().getResource(photoPath + photoName)).createImage();
+//			studentImage = ImageDescriptor.createFromURL(getClass().getResource(PHOTO_PATH + photoName)).createImage();
+			studentImage = ImageDescriptor.createFromURL(getClass().getResource(Path.of(PHOTO_PATH, photoName).toString())).createImage();
 		}
 		studentPhoto.setLayoutData(gridData);
 		studentPhoto.addPaintListener(new PaintListener() {
@@ -214,7 +216,7 @@ public class StudentEditInfo {
 		this.fieldAddress.setText(inputPerson.getAddress());
 		this.fieldCity.setText(inputPerson.getCity());
 		this.fieldResult.setText(String.valueOf(inputPerson.getResult()));
-		studentImage = ImageDescriptor.createFromURL(getClass().getResource(photoPath + photoName)).createImage();
+		studentImage = ImageDescriptor.createFromURL(getClass().getResource(Path.of(PHOTO_PATH, photoName).toString())).createImage();
 	}
 
 	private KeyAdapter getTextFieldListener(EPartService partService) {
