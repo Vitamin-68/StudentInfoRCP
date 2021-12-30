@@ -15,15 +15,13 @@ import org.eclipse.jface.viewers.TreeViewer;
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.parts.StudentEditInfo;
 import com.luxoft.vmosin.parts.TreeGroupView;
+import com.luxoft.vmosin.utils.Const;
 
 public class EditHandler {
-	
+
 	@CanExecute
 	public boolean canExecute(EPartService partService, EModelService modelService, MApplication application) {
-		if (partService.getActivePart() == null || !(partService.getActivePart().getObject() instanceof TreeGroupView)) {
-			return false;
-		}
-		return true;
+		return partService.getActivePart() != null && partService.getActivePart().getObject() instanceof TreeGroupView;
 	}
 
 	@Execute
@@ -34,10 +32,9 @@ public class EditHandler {
 			return;
 		}
 		Person person = (Person) selection.getFirstElement();
-		MPartStack stack = (MPartStack) modelService.find("studentinforcp.partstack.editor", application);
-		
+		MPartStack stack = (MPartStack) modelService.find(Const.PART_STACK_EDITOR, application);
 		MPart part = MBasicFactory.INSTANCE.createPart();
-		part.setContributionURI("bundleclass://StudentInfoRCP/com.luxoft.vmosin.parts.StudentEditInfo");
+		part.setContributionURI(Const.BUNDLE_STUDENT_INFO);
 		part.setCloseable(true);
 		part.setLabel(person.getName());
 		for (int i = 0; i < stack.getChildren().size(); i++) {
@@ -51,8 +48,10 @@ public class EditHandler {
 		studentInfo.setPerson(person);
 	}
 
-private boolean isPartExist(MPartStack stack, Person person, int ind) {
-	return (((MPart) stack.getChildren().get(ind)).getLabel().equals(person.getName()) && ((MPart) stack.getChildren().get(ind)).getObject() != null);
-}
-	
+	private boolean isPartExist(MPartStack stack, Person person, int ind) {
+		boolean alreadyOpened = ((MPart) stack.getChildren().get(ind)).getLabel().equals(person.getName());
+		boolean notClosed = ((MPart) stack.getChildren().get(ind)).getObject() != null;
+		return alreadyOpened && notClosed;
+	}
+
 }

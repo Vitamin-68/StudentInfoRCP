@@ -5,9 +5,6 @@ import java.io.IOException;
 
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -19,21 +16,21 @@ import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
 import com.luxoft.vmosin.parts.TreeGroupView;
+import com.luxoft.vmosin.utils.Const;
 
 public class SaveHandler {
 
 	@CanExecute
 	public boolean canExecute(EPartService partService) {
 		if (partService != null) {
-			return partService.findPart("studentinforcp.part.groupview").isDirty();
-//			return !partService.getDirtyParts().isEmpty();
+			return partService.findPart(Const.PART_TREE_VIEW).isDirty();
 		}
 		return false;
 	}
 
 	@Execute
 	public static void execute(EPartService partService) {
-		PersonGroup personGroup = ((TreeGroupView) partService.findPart("studentinforcp.part.groupview").getObject()).getRoot();
+		PersonGroup personGroup = ((TreeGroupView) partService.findPart(Const.PART_TREE_VIEW).getObject()).getRoot();
 		PersonAbstr[] objArray = personGroup.getPersons();
 		FileDialog dialog = new FileDialog(new Shell(), SWT.SAVE);
 		dialog.setFilterExtensions(new String[] { "*.json", "*.*" });

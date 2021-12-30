@@ -1,4 +1,4 @@
- 
+
 package com.luxoft.vmosin.handlers;
 
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -13,19 +13,17 @@ import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
 import com.luxoft.vmosin.parts.TreeGroupView;
+import com.luxoft.vmosin.utils.Const;
 
 import org.eclipse.e4.core.di.annotations.CanExecute;
 
 public class DeleteHandler {
-	
+
 	@CanExecute
 	public boolean canExecute(EPartService partService) {
-		if (partService.getActivePart() == null || !(partService.getActivePart().getObject() instanceof TreeGroupView)) {
-			return false;
-		}
-		return true;
+		return partService.getActivePart() != null && partService.getActivePart().getObject() instanceof TreeGroupView;
 	}
-		
+
 	@Execute
 	public void execute(EPartService partService, EModelService modelService, MApplication application) {
 		TreeViewer treeViewer = ((TreeGroupView) partService.getActivePart().getObject()).getTreeViewer();
@@ -36,13 +34,17 @@ public class DeleteHandler {
 			partService.getActivePart().setDirty(true);
 			treeViewer.refresh();
 			return;
-		} else if ((selection.getFirstElement() instanceof PersonGroup) && !((PersonGroup) selection.getFirstElement()).getName().equals("Folder") && isConfirmDelete("this Group")) {
+		} else if (selection.getFirstElement() instanceof PersonGroup
+				&& !((PersonGroup) selection.getFirstElement()).getName().equals(Const.TREE_FOLDER)
+				&& isConfirmDelete("this Group")) {
 			PersonGroup group = (PersonGroup) selection.getFirstElement();
 			group.getParent().removePerson(group);
 			partService.getActivePart().setDirty(true);
 			treeViewer.refresh();
 			return;
-		} else if ((selection.getFirstElement() instanceof PersonGroup) && ((PersonGroup) selection.getFirstElement()).getName().equals("Folder") && isConfirmDelete("all Groups")) {
+		} else if ((selection.getFirstElement() instanceof PersonGroup)
+				&& ((PersonGroup) selection.getFirstElement()).getName().equals(Const.TREE_FOLDER)
+				&& isConfirmDelete("all Groups")) {
 			PersonGroup group = (PersonGroup) selection.getFirstElement();
 			for (PersonAbstr person : group.getPersons()) {
 				group.removePerson(person);

@@ -8,7 +8,6 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.FileDialog;
@@ -19,6 +18,7 @@ import org.json.JSONObject;
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonGroup;
 import com.luxoft.vmosin.parts.TreeGroupView;
+import com.luxoft.vmosin.utils.Const;
 
 public class OpenHandler {
 
@@ -39,9 +39,9 @@ public class OpenHandler {
 				System.out.println("File not found.");
 				e.printStackTrace();
 			}
-			PersonGroup newRoot = new PersonGroup(null, "hidden");
+			PersonGroup newRoot = new PersonGroup(null, Const.TREE_ROOT);
 			JSONArray jsonArray = new JSONArray(inputData);
-			MPart treeGroupView = partService.findPart("studentinforcp.part.groupview");
+			MPart treeGroupView = partService.findPart(Const.PART_TREE_VIEW);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject rootObj = jsonArray.getJSONObject(i);
 				PersonGroup folder = new PersonGroup(newRoot, rootObj.getString("name"));
@@ -62,15 +62,15 @@ public class OpenHandler {
 			}
 
 			// попытка закрыть оставшиеся вкладки в редакторе после загрузки нового файла
-//			MPartStack stack = (MPartStack) modelService.find("studentinforcp.partstack.editor", application);
+//			MPartStack stack = (MPartStack) modelService.find(Const.PART_STACK_EDITOR, application);
+//			stack.getChildren().clear();
 //			for (int i = 0; i < stack.getChildren().size(); i++) {
 //				partService.hidePart((MPart) stack.getChildren().get(i), true);
-////			    stack.getChildren().remove(0);
+////				((MPart) stack.getChildren().get(i)).setObject(null);
 //			}
 
 			((TreeGroupView) treeGroupView.getObject()).setRoot(newRoot);
-			((TreeGroupView) partService.findPart("studentinforcp.part.groupview").getObject()).getTreeViewer()
-					.setInput(newRoot);
+			((TreeGroupView) partService.findPart(Const.PART_TREE_VIEW).getObject()).getTreeViewer().setInput(newRoot);
 			treeGroupView.setDirty(false);
 
 		}

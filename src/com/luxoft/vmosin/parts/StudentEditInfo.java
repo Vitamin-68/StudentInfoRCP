@@ -4,6 +4,7 @@ import java.nio.file.Path;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Named;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
@@ -29,11 +30,13 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
+import com.luxoft.vmosin.utils.Const;
 
 public class StudentEditInfo {
 
@@ -47,7 +50,7 @@ public class StudentEditInfo {
 	private Text fieldCity;
 	private Text fieldResult;
 	private KeyAdapter txtFieldListener;
-	private final static String PHOTO_PATH = "/resources/photo/";
+	
 
 	@PostConstruct
 	public void postConstruct(Composite parent, EPartService partService) {
@@ -74,7 +77,8 @@ public class StudentEditInfo {
 		gridData.verticalSpan = 6;
 		if (photoName != null) {
 //			studentImage = ImageDescriptor.createFromURL(getClass().getResource(PHOTO_PATH + photoName)).createImage();
-			studentImage = ImageDescriptor.createFromURL(getClass().getResource(Path.of(PHOTO_PATH, photoName).toString())).createImage();
+			studentImage = ImageDescriptor
+					.createFromURL(getClass().getResource(Path.of(Const.PHOTO_PATH, photoName).toString())).createImage();
 		}
 		studentPhoto.setLayoutData(gridData);
 		studentPhoto.addPaintListener(new PaintListener() {
@@ -126,7 +130,7 @@ public class StudentEditInfo {
 		gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData.horizontalSpan = 2;
 		label = new Label(parent, SWT.LEFT);
-		label.setText("* – required fields");
+		label.setText("* - required fields");
 		label.setLayoutData(gridData);
 		gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData.horizontalSpan = 3;
@@ -135,47 +139,7 @@ public class StudentEditInfo {
 		saveButton.setText("Save");
 		saveButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				if (fieldName.getText().trim().isEmpty() || fieldGroup.getText().trim().isEmpty()) {
-					MessageDialog.openInformation(parent.getShell(), "Warning!",
-							"Fields \"Name\" and \"Group?\" not allow be empty!");
-					return;
-				}
-				MPart groupViewPart = partService.findPart("studentinforcp.part.groupview");
-				PersonGroup root = ((TreeGroupView) groupViewPart.getObject()).getRoot();
-				PersonGroup folder = (PersonGroup) root.getPersons()[0];
-				TreeViewer treeViewer = ((TreeGroupView) groupViewPart.getObject()).getTreeViewer();
-				if (!fieldGroup.getText().equals(inputPerson.getParent().getName())) {
-					inputPerson.setGroup(moveToOtherGroup(folder));
-				}
-				inputPerson.setName(fieldName.getText());
-				inputPerson.setAddress(fieldAddress.getText());
-				inputPerson.setCity(fieldCity.getText());
-				inputPerson.setPhotoName(photoName);
-				inputPerson.setResult(Integer.parseInt(fieldResult.getText()));
-				partService.findPart("studentinforcp.part.groupview").setDirty(true);
-				partService.getActivePart().setDirty(false);
-				partService.getActivePart().setLabel(fieldName.getText());
-				((TreeGroupView) groupViewPart.getObject()).setRoot(root);
-				treeViewer.setInput(root);
-				treeViewer.refresh();
-			}
-
-			private PersonGroup moveToOtherGroup(PersonGroup folder) {
-				inputPerson.getParent().removePerson(inputPerson);
-				PersonGroup newGroup = null;
-				PersonAbstr[] arr = inputPerson.getParent().getParent().getPersons();
-				for (PersonAbstr obj : arr) {
-					if (obj.getName().equals(fieldGroup.getText())) {
-						newGroup = (PersonGroup) obj;
-						break;
-					}
-				}
-				if (newGroup == null) {
-					newGroup = new PersonGroup(folder, fieldGroup.getText());
-					folder.addPerson(newGroup);
-				}
-				newGroup.addPerson(inputPerson);
-				return newGroup;
+				saveInfoStudent(partService);
 			}
 		});
 		Button addPhotoButton = new Button(parent, SWT.PUSH);
@@ -204,8 +168,58 @@ public class StudentEditInfo {
 	}
 
 	@Persist
-	public void save() {
+	public void save(EPartService partService) {
+		saveInfoStudent(partService);
+		partService.getActivePart().setDirty(false);
+	}
+	
+	private void saveInfoStudent(EPartService partService) {
+		if (isNameValid()) {
+			MPart groupViewPart = partService.findPart(Const.PART_TREE_VIEW);
+			PersonGroup root = ((TreeGroupView) groupViewPart.getObject()).getRoot();
+			PersonGroup folder = (PersonGroup) root.getPersons()[0];
+			TreeViewer treeViewer = ((TreeGroupView) groupViewPart.getObject()).getTreeViewer();
+			if (!fieldGroup.getText().equals(inputPerson.getParent().getName())) {
+				inputPerson.setGroup(moveToOtherGroup(folder));
+			}
+			inputPerson.setName(fieldName.getText());
+			inputPerson.setAddress(fieldAddress.getText());
+			inputPerson.setCity(fieldCity.getText());
+			inputPerson.setPhotoName(photoName);
+			inputPerson.setResult(Integer.parseInt(fieldResult.getText()));
+//			partService.findPart(Const.PART_TREE_VIEW).setDirty(true);
+			groupViewPart.setDirty(true);
+			partService.getActivePart().setDirty(false);
+			partService.getActivePart().setLabel(fieldName.getText());
+			((TreeGroupView) groupViewPart.getObject()).setRoot(root);
+			treeViewer.setInput(root);
+			treeViewer.refresh();
+		} else {
+			MessageDialog.openInformation(new Shell(), "Warning!",
+					"Fields \"Name\" and \"Group?\" not allow be empty!");
+		}
+	}
 
+	private boolean isNameValid() {
+		return !fieldName.getText().trim().isEmpty() && !fieldGroup.getText().trim().isEmpty();
+	}
+
+	private PersonGroup moveToOtherGroup(PersonGroup folder) {
+		inputPerson.getParent().removePerson(inputPerson);
+		PersonGroup newGroup = null;
+		PersonAbstr[] arr = inputPerson.getParent().getParent().getPersons();
+		for (PersonAbstr obj : arr) {
+			if (obj.getName().equals(fieldGroup.getText())) {
+				newGroup = (PersonGroup) obj;
+				break;
+			}
+		}
+		if (newGroup == null) {
+			newGroup = new PersonGroup(folder, fieldGroup.getText());
+			folder.addPerson(newGroup);
+		}
+		newGroup.addPerson(inputPerson);
+		return newGroup;
 	}
 
 	public void setPerson(Person person) {
@@ -216,7 +230,10 @@ public class StudentEditInfo {
 		this.fieldAddress.setText(inputPerson.getAddress());
 		this.fieldCity.setText(inputPerson.getCity());
 		this.fieldResult.setText(String.valueOf(inputPerson.getResult()));
-		studentImage = ImageDescriptor.createFromURL(getClass().getResource(Path.of(PHOTO_PATH, photoName).toString())).createImage();
+//		studentImage = ImageDescriptor.createFromURL(getClass().getResource(Path.of(Const.PHOTO_PATH, photoName).toString()))
+//				.createImage();
+		studentImage = ImageDescriptor.createFromURL(getClass().getResource(Const.PHOTO_PATH + photoName))
+				.createImage();
 	}
 
 	private KeyAdapter getTextFieldListener(EPartService partService) {
@@ -232,7 +249,7 @@ public class StudentEditInfo {
 		}
 		return txtFieldListener;
 	}
-	
+
 	private String getNameFromPath(String path) {
 		int idx = path.replaceAll("\\\\", "/").lastIndexOf("/");
 		return idx >= 0 ? path.substring(idx + 1) : path;

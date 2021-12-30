@@ -3,8 +3,6 @@ package com.luxoft.vmosin.entity;
 import java.util.ArrayList; 
 import java.util.List;
 
-import org.eclipse.core.runtime.ListenerList;
-
 public class PersonGroup extends PersonAbstr {
 	
 	private PersonGroup parent;

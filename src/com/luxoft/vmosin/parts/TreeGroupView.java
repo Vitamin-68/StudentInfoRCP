@@ -13,40 +13,40 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.widgets.Composite;
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonGroup;
 import com.luxoft.vmosin.handlers.EditHandler;
-import com.luxoft.vmosin.handlers.NewHandler;
+import com.luxoft.vmosin.utils.Const;
 
 @Singleton
 public class TreeGroupView extends SelectionAdapter {
 
 	private TreeViewer treeViewer;
 	private PersonGroup root;
-	private final String nameEditCommand = "studentinforcp.ui.edit.editCommand";
 
-	@Inject	private MPart part;
-	@Inject private ECommandService commandService;
-	@Inject private EHandlerService service;
-	
+	@Inject
+	private MPart part;
+	@Inject
+	private ECommandService commandService;
+	@Inject
+	private EHandlerService service;
+
 	@PostConstruct
-	public void createComposite(Composite parent, EMenuService menuService) {
+	public void createComposite(Composite parent, EMenuService menuService, EPartService partService) {
 		treeViewer = new TreeViewer(parent);
 		treeViewer.setLabelProvider(new MyLabelProvider());
 		treeViewer.setContentProvider(new MyContentProvider());
@@ -54,7 +54,7 @@ public class TreeGroupView extends SelectionAdapter {
 
 		Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer() };
 		int operations = DND.DROP_MOVE | DND.DROP_COPY;
-		treeViewer.addDragSupport(operations, transfers, new DragSourceListener() {
+		treeViewer.addDragSupport(operations, transfers, new DragSourceAdapter() {
 			@Override
 			public void dragStart(DragSourceEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
@@ -64,73 +64,26 @@ public class TreeGroupView extends SelectionAdapter {
 			}
 
 			@Override
-			public void dragSetData(DragSourceEvent event) {
-			}
-
-			@Override
 			public void dragFinished(DragSourceEvent event) {
-				
-				if (event.detail == DND.DROP_MOVE) {
-					System.out.println("move");
-				} else if (event.detail == DND.DROP_COPY) {
-					System.out.println("copy");
-				}
-				
 				treeViewer.refresh();
 			}
-
 		});
-		treeViewer.addDoubleClickListener(event-> {
-		        IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-		        if (selection.isEmpty()) return;
-		        try {
-	                Command command = commandService.getCommand(nameEditCommand);
-	                if( !command.isDefined() )
-	                    return;
-	                ParameterizedCommand myCommand = commandService.createCommand(nameEditCommand, null);
-	                service.activateHandler(nameEditCommand, new EditHandler());
-	                if( !service.canExecute(myCommand ))
-	                    return;
-	                service.executeHandler( myCommand );
-	            } catch (Exception ex) {
-	                throw new RuntimeException(String.format("command with id \"%s\" not found", nameEditCommand));
-	            } 
-		        
-		    }
-		);
-		treeViewer.addDropSupport(DND.DROP_MOVE, transfers, new DropTargetAdapter() {
 
+		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
-			public void dragEnter(DropTargetEvent event) {
-				// TODO Auto-generated method stub
+			public void doubleClick(DoubleClickEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				if (selection.isEmpty())
+					return;
+				createEditPart();
 			}
+		});
+		
 
+		treeViewer.addDropSupport(operations, transfers, new DropTargetAdapter() {
 			@Override
 			public void dragLeave(DropTargetEvent event) {
-				// TODO Auto-generated method stub
-				
-				try {
-	                Command command = commandService.getCommand(nameEditCommand);
-	                if( !command.isDefined() )
-	                    return;
-	                ParameterizedCommand myCommand = commandService.createCommand(nameEditCommand, null);
-	                service.activateHandler(nameEditCommand, new EditHandler());
-	                if( !service.canExecute(myCommand ))
-	                    return;
-	                service.executeHandler( myCommand );
-	            } catch (Exception ex) {
-	                throw new RuntimeException(String.format("command with id \"%s\" not found", nameEditCommand));
-	            }   
-			}
-
-			@Override
-			public void dragOperationChanged(DropTargetEvent event) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void dragOver(DropTargetEvent event) {
-				// TODO Auto-generated method stub
+				createEditPart();
 			}
 
 			@Override
@@ -141,7 +94,7 @@ public class TreeGroupView extends SelectionAdapter {
 			private void movePersonToOtherGroup(DropTargetEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
 				if ((event.item != null && event.item.getData() instanceof PersonGroup
-						&& !((PersonGroup) event.item.getData()).getName().equals("Folder"))) {
+						&& !((PersonGroup) event.item.getData()).getName().equals(Const.TREE_FOLDER))) {
 					Person p = (Person) selection.getFirstElement();
 					PersonGroup pg = (PersonGroup) event.item.getData();
 					if (p.getParent() != pg) {
@@ -150,23 +103,34 @@ public class TreeGroupView extends SelectionAdapter {
 						p.setGroup(pg);
 						part.setDirty(true);
 					}
-				}				
+				}
 			}
-
-			@Override
-			public void dropAccept(DropTargetEvent event) {
-			}
-
 		});
-		
-		menuService.registerContextMenu(treeViewer.getControl(), "studentinforcp.popupmenu.popupmenu");
+
+		menuService.registerContextMenu(treeViewer.getControl(), Const.POPUP_MENU);
 		treeViewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
 		treeViewer.setInput(root);
 	}
 
+	private void createEditPart() {
+		try {
+			Command command = commandService.getCommand(Const.NAME_EDIT_COMMAND);
+			if (!command.isDefined())
+				return;
+			ParameterizedCommand myCommand = commandService.createCommand(Const.NAME_EDIT_COMMAND, null);
+			service.activateHandler(Const.NAME_EDIT_COMMAND, new EditHandler());
+			if (!service.canExecute(myCommand))
+				return;
+			service.executeHandler(myCommand);
+		} catch (Exception ex) {
+			throw new RuntimeException(
+					String.format("command with id \"%s\" not found", Const.NAME_EDIT_COMMAND));
+		}
+	}
+
 	private void createPersonsModel() {
-		root = new PersonGroup(null, "ppp");
-		PersonGroup folder = new PersonGroup(root, "Folder");
+		root = new PersonGroup(null, "init");
+		PersonGroup folder = new PersonGroup(root, Const.TREE_FOLDER);
 		root.addPerson(folder);
 		PersonGroup gr1 = new PersonGroup(folder, "Group 1");
 		PersonGroup gr2 = new PersonGroup(folder, "Group 2");

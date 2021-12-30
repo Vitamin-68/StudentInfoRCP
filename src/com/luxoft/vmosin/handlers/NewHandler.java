@@ -21,16 +21,13 @@ import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
 import com.luxoft.vmosin.parts.StudentEditInfo;
 import com.luxoft.vmosin.parts.TreeGroupView;
+import com.luxoft.vmosin.utils.Const;
 
 public class NewHandler {
 
 	@CanExecute
 	public boolean canExecute(EPartService partService) {
-		if (partService.getActivePart() == null
-				|| !(partService.getActivePart().getObject() instanceof TreeGroupView)) {
-			return false;
-		}
-		return true;
+		return partService.getActivePart() != null && partService.getActivePart().getObject() instanceof TreeGroupView;
 	}
 
 	@Execute
@@ -39,9 +36,9 @@ public class NewHandler {
 		IStructuredSelection selection = treeViewer.getStructuredSelection();
 		if ((selection.getFirstElement() instanceof PersonGroup)
 				&& ((PersonGroup) selection.getFirstElement()).getParent().getName().equals("Folder")) {
-			MPartStack stack = (MPartStack) modelService.find("studentinforcp.partstack.editor", application);
+			MPartStack stack = (MPartStack) modelService.find(Const.PART_STACK_EDITOR, application);
 			MPart part = MBasicFactory.INSTANCE.createPart();
-			part.setContributionURI("bundleclass://StudentInfoRCP/com.luxoft.vmosin.parts.StudentEditInfo");
+			part.setContributionURI(Const.BUNDLE_STUDENT_INFO);
 			part.setCloseable(true);
 			part.setLabel("New student");
 			PersonGroup pg = (PersonGroup) selection.getFirstElement();
