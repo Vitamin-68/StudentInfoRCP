@@ -12,18 +12,24 @@ import com.luxoft.vmosin.entity.Person;
 public class MyLabelProvider extends LabelProvider {
 
 	private ResourceManager resourceManager = new LocalResourceManager(JFaceResources.getResources());
+	private Image image;
 
 	@Override
 	public Image getImage(Object element) {
-		return ImageDescriptor
+		image = ImageDescriptor
 				.createFromURL(getClass()
 						.getResource((element instanceof Person) ? "/icons/home.png" : "/icons/open_in_app.png"))
 				.createImage();
+		return image;
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
 		resourceManager.dispose();
+//		if (image != null) {
+//			ImageDescriptor;
+//			image.dispose();
+//		}
 	}
 }

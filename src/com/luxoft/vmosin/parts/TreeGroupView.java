@@ -2,6 +2,7 @@
 package com.luxoft.vmosin.parts;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -11,9 +12,10 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -27,6 +29,7 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.widgets.Composite;
+
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonGroup;
 import com.luxoft.vmosin.handlers.EditHandler;
@@ -46,7 +49,7 @@ public class TreeGroupView extends SelectionAdapter {
 	private EHandlerService service;
 
 	@PostConstruct
-	public void createComposite(Composite parent, EMenuService menuService, EPartService partService) {
+	public void createComposite(Composite parent, EMenuService menuService, EModelService modelService, MApplication application) {
 		treeViewer = new TreeViewer(parent);
 		treeViewer.setLabelProvider(new MyLabelProvider());
 		treeViewer.setContentProvider(new MyContentProvider());
@@ -69,23 +72,7 @@ public class TreeGroupView extends SelectionAdapter {
 			}
 		});
 
-		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-				if (selection.isEmpty())
-					return;
-				createEditPart();
-			}
-		});
-		
-
 		treeViewer.addDropSupport(operations, transfers, new DropTargetAdapter() {
-			@Override
-			public void dragLeave(DropTargetEvent event) {
-				createEditPart();
-			}
-
 			@Override
 			public void drop(DropTargetEvent event) {
 				movePersonToOtherGroup(event);
@@ -106,6 +93,16 @@ public class TreeGroupView extends SelectionAdapter {
 				}
 			}
 		});
+		
+		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				if (selection.isEmpty())
+					return;
+				createEditPart();
+			}
+		});
 
 		menuService.registerContextMenu(treeViewer.getControl(), Const.POPUP_MENU);
 		treeViewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
@@ -123,8 +120,7 @@ public class TreeGroupView extends SelectionAdapter {
 				return;
 			service.executeHandler(myCommand);
 		} catch (Exception ex) {
-			throw new RuntimeException(
-					String.format("command with id \"%s\" not found", Const.NAME_EDIT_COMMAND));
+			throw new RuntimeException(String.format("command with id \"%s\" not found", Const.NAME_EDIT_COMMAND));
 		}
 	}
 
@@ -155,6 +151,10 @@ public class TreeGroupView extends SelectionAdapter {
 	@Persist
 	public void save() {
 		part.setDirty(false);
+	}
+
+	@PreDestroy
+	public void preDestroy() {
 	}
 
 	public PersonGroup getRoot() {

@@ -26,7 +26,9 @@
           </menus>
         </children>
       </children>
-      <children xsi:type="basic:PartStack" xmi:id="_VzNyMFbtEeyCpdrMg7p_BQ" elementId="studentinforcp.partstack.editor" containerData="7000" accessibilityPhrase=""/>
+      <children xsi:type="basic:PartStack" xmi:id="_VzNyMFbtEeyCpdrMg7p_BQ" elementId="studentinforcp.partstack.editor" containerData="7000" accessibilityPhrase="">
+        <children xsi:type="basic:Part" xmi:id="_lwfU4G2vEeyet9vhoM1czQ" elementId="studentinforcp.part." contributionURI="bundleclass://StudentInfoRCP/com.luxoft.vmosin.parts.BlankPartEditor" label=""/>
+      </children>
     </children>
     <mainMenu xmi:id="_6wlLicgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_6wlLisgZEeSyMNYR5xypkQ" elementId="file" label="&amp;File">

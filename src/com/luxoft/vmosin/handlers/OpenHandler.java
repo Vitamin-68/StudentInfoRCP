@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
@@ -61,18 +62,18 @@ public class OpenHandler {
 				}
 			}
 
-			// попытка закрыть оставшиеся вкладки в редакторе после загрузки нового файла
-//			MPartStack stack = (MPartStack) modelService.find(Const.PART_STACK_EDITOR, application);
-//			stack.getChildren().clear();
-//			for (int i = 0; i < stack.getChildren().size(); i++) {
-//				partService.hidePart((MPart) stack.getChildren().get(i), true);
-////				((MPart) stack.getChildren().get(i)).setObject(null);
-//			}
-
+			closeAllTabs(modelService, application);
 			((TreeGroupView) treeGroupView.getObject()).setRoot(newRoot);
 			((TreeGroupView) partService.findPart(Const.PART_TREE_VIEW).getObject()).getTreeViewer().setInput(newRoot);
 			treeGroupView.setDirty(false);
-
 		}
+	}
+
+	private void closeAllTabs(EModelService modelService, MApplication application) {
+		MPart part = MBasicFactory.INSTANCE.createPart();
+		part.setContributionURI(Const.BUNDLE_STUDENT_INFO);
+		MPartStack stack = (MPartStack) modelService.find(Const.PART_STACK_EDITOR, application);
+		stack.getChildren().clear();
+		stack.getChildren().add(part);
 	}
 }

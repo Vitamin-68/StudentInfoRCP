@@ -1,19 +1,27 @@
 package com.luxoft.vmosin.parts;
 
-import java.nio.file.Path;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Named;
+import javax.inject.Inject;
 
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.PaintEvent;
@@ -36,9 +44,15 @@ import org.eclipse.swt.widgets.Text;
 import com.luxoft.vmosin.entity.Person;
 import com.luxoft.vmosin.entity.PersonAbstr;
 import com.luxoft.vmosin.entity.PersonGroup;
+import com.luxoft.vmosin.handlers.EditHandler;
 import com.luxoft.vmosin.utils.Const;
 
 public class StudentEditInfo {
+	
+	@Inject
+	private ECommandService commandService;
+	@Inject
+	private EHandlerService service;
 
 	private Person inputPerson;
 	private Text fieldName;
@@ -50,7 +64,6 @@ public class StudentEditInfo {
 	private Text fieldCity;
 	private Text fieldResult;
 	private KeyAdapter txtFieldListener;
-	
 
 	@PostConstruct
 	public void postConstruct(Composite parent, EPartService partService) {
@@ -75,11 +88,6 @@ public class StudentEditInfo {
 		gridData.heightHint = 60;
 		gridData.horizontalSpan = 3;
 		gridData.verticalSpan = 6;
-		if (photoName != null) {
-//			studentImage = ImageDescriptor.createFromURL(getClass().getResource(PHOTO_PATH + photoName)).createImage();
-			studentImage = ImageDescriptor
-					.createFromURL(getClass().getResource(Path.of(Const.PHOTO_PATH, photoName).toString())).createImage();
-		}
 		studentPhoto.setLayoutData(gridData);
 		studentPhoto.addPaintListener(new PaintListener() {
 			public void paintControl(final PaintEvent event) {
@@ -155,11 +163,15 @@ public class StudentEditInfo {
 				}
 			}
 		});
+//		createDropTarget(parent);
+		Const.createDropTarget(parent, commandService, service);
 	}
 
 	@PreDestroy
 	public void preDestroy() {
-
+		if (studentImage != null) {
+			studentImage.dispose();
+		}
 	}
 
 	@Focus
@@ -172,7 +184,36 @@ public class StudentEditInfo {
 		saveInfoStudent(partService);
 		partService.getActivePart().setDirty(false);
 	}
-	
+
+	private void createDropTarget(Composite parent) {
+		Transfer[] types = new Transfer[] { LocalSelectionTransfer.getTransfer() };
+		int operations = DND.DROP_MOVE | DND.DROP_COPY;
+		DropTarget target = new DropTarget(parent, operations);
+		target.setTransfer(types);
+		target.addDropListener(new DropTargetAdapter() {
+			@Override
+			public void drop(DropTargetEvent event){
+				if (event.data != null) {
+					event.detail = DND.DROP_NONE;
+					return;
+				}
+				event.detail = DND.DROP_COPY;
+				try {
+					Command command = commandService.getCommand(Const.NAME_EDIT_COMMAND);
+					if (!command.isDefined())
+						return;
+					ParameterizedCommand myCommand = commandService.createCommand(Const.NAME_EDIT_COMMAND, null);
+					service.activateHandler(Const.NAME_EDIT_COMMAND, new EditHandler());
+					if (!service.canExecute(myCommand))
+						return;
+					service.executeHandler(myCommand);
+				} catch (Exception ex) {
+					throw new RuntimeException(String.format("command with id \"%s\" not found", Const.NAME_EDIT_COMMAND));
+				}
+			}
+		});
+	}
+
 	private void saveInfoStudent(EPartService partService) {
 		if (isNameValid()) {
 			MPart groupViewPart = partService.findPart(Const.PART_TREE_VIEW);
@@ -187,7 +228,6 @@ public class StudentEditInfo {
 			inputPerson.setCity(fieldCity.getText());
 			inputPerson.setPhotoName(photoName);
 			inputPerson.setResult(Integer.parseInt(fieldResult.getText()));
-//			partService.findPart(Const.PART_TREE_VIEW).setDirty(true);
 			groupViewPart.setDirty(true);
 			partService.getActivePart().setDirty(false);
 			partService.getActivePart().setLabel(fieldName.getText());
@@ -230,10 +270,10 @@ public class StudentEditInfo {
 		this.fieldAddress.setText(inputPerson.getAddress());
 		this.fieldCity.setText(inputPerson.getCity());
 		this.fieldResult.setText(String.valueOf(inputPerson.getResult()));
-//		studentImage = ImageDescriptor.createFromURL(getClass().getResource(Path.of(Const.PHOTO_PATH, photoName).toString()))
-//				.createImage();
-		studentImage = ImageDescriptor.createFromURL(getClass().getResource(Const.PHOTO_PATH + photoName))
-				.createImage();
+		if (!photoName.isEmpty()) {
+			studentImage = ImageDescriptor.createFromURL(getClass().getResource(Const.PHOTO_PATH + photoName))
+					.createImage();
+		}
 	}
 
 	private KeyAdapter getTextFieldListener(EPartService partService) {
