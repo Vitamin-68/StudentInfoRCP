@@ -40,7 +40,7 @@ public class EditHandler {
 		if (childrens != null) {
 			for (MStackElement child : childrens) {
 				MPart childPart = (MPart) child;
-				if (childPart.getLabel() != null && isPartExist (childPart, person)) {
+				if (childPart.getLabel() != null && isPartExist(childPart, person)) {
 					return;
 				}
 			}

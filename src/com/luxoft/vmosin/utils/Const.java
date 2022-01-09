@@ -26,6 +26,8 @@ public class Const {
 	public static final String NAME_EDIT_COMMAND = "studentinforcp.ui.edit.editCommand";
 	public static final String POPUP_MENU = "studentinforcp.popupmenu.popupmenu";
 	public final static String PHOTO_PATH = "/resources/photo/";
+	public final static String IMAGE_GROUP = "/icons/group_icon.png";
+	public final static String IMAGE_STUDENT= "/icons/student_icon.png";
 
 	public static void createDropTarget(Composite parent, ECommandService commandService, EHandlerService service) {
 		Transfer[] types = new Transfer[] { LocalSelectionTransfer.getTransfer() };

@@ -12,10 +12,8 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
-import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -49,7 +47,7 @@ public class TreeGroupView extends SelectionAdapter {
 	private EHandlerService service;
 
 	@PostConstruct
-	public void createComposite(Composite parent, EMenuService menuService, EModelService modelService, MApplication application) {
+	public void createComposite(Composite parent, EMenuService menuService) {
 		treeViewer = new TreeViewer(parent);
 		treeViewer.setLabelProvider(new MyLabelProvider());
 		treeViewer.setContentProvider(new MyContentProvider());
@@ -134,12 +132,12 @@ public class TreeGroupView extends SelectionAdapter {
 		folder.addPerson(gr1);
 		folder.addPerson(gr2);
 		folder.addPerson(gr3);
-		gr1.addPerson(new Person("Nick", gr1, "addr 1", "city 1", "S_01.png", 5));
-		gr1.addPerson(new Person("John", gr1, "addr 2", "city 2", "", 4));
-		gr2.addPerson(new Person("Anna", gr2, "addr 3", "city 3", "", 3));
-		gr3.addPerson(new Person("Jack", gr3, "addr 4", "city 4", "", 2));
-		gr3.addPerson(new Person("Liza", gr3, "addr 5", "city 5", "", 1));
-		gr3.addPerson(new Person("Elvis", gr3, "addr 6", "city 6", "", 4));
+		gr1.addPerson(new Person("Bart Simpson", gr1, "addr 1", "city 1", "S_01.png", 5));
+		gr1.addPerson(new Person("Homer Simpson", gr1, "addr 2", "city 2", "S_02.png", 4));
+		gr2.addPerson(new Person("Kearney Zzyzwicz", gr2, "addr 3", "city 3", "S_03.png", 3));
+		gr3.addPerson(new Person("Lisa Simpson", gr3, "addr 4", "city 4", "S_04.png", 2));
+		gr3.addPerson(new Person("Marge Simpson", gr3, "addr 5", "city 5", "S_05.png", 1));
+		gr3.addPerson(new Person("Kirk Van Houten", gr3, "addr 6", "city 6", "S_07.png", 4));
 
 	}
 
